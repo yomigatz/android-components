@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.android.asCoroutineDispatcher
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import mozilla.components.browser.engine.gecko.GeckoEngineSession
@@ -25,6 +26,9 @@ private const val ARTWORK_IMAGE_SIZE = 48
 internal class GeckoMediaSessionDelegate(
     private val engineSession: GeckoEngineSession
 ) : GeckoViewMediaSession.Delegate {
+
+    @VisibleForTesting
+    internal var artWorkDispatcher = getArtworkDispatcher()
 
     override fun onActivated(geckoSession: GeckoSession, mediaSession: GeckoViewMediaSession) {
         engineSession.notifyObservers {
@@ -43,21 +47,14 @@ internal class GeckoMediaSessionDelegate(
         mediaSession: GeckoViewMediaSession,
         metaData: GeckoViewMediaSession.Metadata
     ) {
-        CoroutineScope(Dispatchers.IO).launch {
-           notifyOnMetadata(metaData)
-        }
-    }
+        CoroutineScope(Dispatchers.IO).launch(artWorkDispatcher) {
+            val artwork = metaData.artwork?.getBitmap(ARTWORK_IMAGE_SIZE)?.await()
 
-    private suspend fun notifyOnMetadata(metaData: GeckoViewMediaSession.Metadata) {
-        var artwork: Bitmap?
-        withContext(getArtworkDispatcher()) {
-            artwork = metaData.artwork?.getBitmap(ARTWORK_IMAGE_SIZE)?.await()
-        }
-
-        engineSession.notifyObservers {
-            onMediaMetadataChanged(
-                MediaSession.Metadata(metaData.title, metaData.artist, metaData.album, artwork)
-            )
+            engineSession.notifyObservers {
+                onMediaMetadataChanged(
+                    MediaSession.Metadata(metaData.title, metaData.artist, metaData.album, artwork)
+                )
+            }
         }
     }
 

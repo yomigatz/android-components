@@ -1,6 +1,11 @@
 package mozilla.components.browser.engine.gecko.mediasession
 
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.test.TestCoroutineDispatcher
 import mozilla.components.browser.engine.gecko.GeckoEngineSession
 import mozilla.components.concept.engine.EngineSession
 import mozilla.components.concept.engine.mediasession.MediaSession
@@ -17,6 +22,7 @@ import org.mozilla.geckoview.GeckoRuntime
 import org.mozilla.geckoview.MediaSession as GeckoViewMediaSession
 
 @RunWith(AndroidJUnit4::class)
+@ExperimentalCoroutinesApi
 class GeckoMediaSessionDelegateTest {
     private lateinit var runtime: GeckoRuntime
 
@@ -80,7 +86,11 @@ class GeckoMediaSessionDelegateTest {
         })
 
         val metadata: GeckoViewMediaSession.Metadata = mock()
+        val geckoMediaSessionDelegate =  engineSession.geckoSession.mediaSessionDelegate!! as GeckoMediaSessionDelegate
+        val testDispatcher = TestCoroutineDispatcher()
+        geckoMediaSessionDelegate.artWorkDispatcher = testDispatcher
         engineSession.geckoSession.mediaSessionDelegate!!.onMetadata(mock(), geckoViewMediaSession, metadata)
+        testDispatcher.advanceUntilIdle()
 
         assertNotNull(observedMetadata)
         assertEquals(observedMetadata?.title, metadata.title)
