@@ -4,10 +4,23 @@
 
 package mozilla.components.browser.engine.gecko.mediasession
 
+import android.graphics.Bitmap
+import android.os.Handler
+import android.os.HandlerThread
+import androidx.annotation.VisibleForTesting
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.android.asCoroutineDispatcher
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import mozilla.components.browser.engine.gecko.GeckoEngineSession
+import mozilla.components.browser.engine.gecko.await
 import mozilla.components.concept.engine.mediasession.MediaSession
 import org.mozilla.geckoview.GeckoSession
 import org.mozilla.geckoview.MediaSession as GeckoViewMediaSession
+
+private const val ARTWORK_IMAGE_SIZE = 48
 
 internal class GeckoMediaSessionDelegate(
     private val engineSession: GeckoEngineSession
@@ -30,11 +43,29 @@ internal class GeckoMediaSessionDelegate(
         mediaSession: GeckoViewMediaSession,
         metaData: GeckoViewMediaSession.Metadata
     ) {
+        CoroutineScope(Dispatchers.IO).launch {
+            notifyOnMetadata(metaData)
+        }
+    }
+
+    private suspend fun notifyOnMetadata(metaData: GeckoViewMediaSession.Metadata) {
+        var artwork: Bitmap?
+        withContext(getArtworkDispatcher()) {
+            artwork = metaData.artwork?.getBitmap(ARTWORK_IMAGE_SIZE)?.await()
+        }
+
         engineSession.notifyObservers {
             onMediaMetadataChanged(
-                MediaSession.Metadata(metaData.title, metaData.artist, metaData.album)
+                MediaSession.Metadata(metaData.title, metaData.artist, metaData.album, artwork)
             )
         }
+    }
+
+    private fun getArtworkDispatcher(): CoroutineDispatcher {
+        val artworkThread = HandlerThread("artworkThread").also {
+            it.start()
+        }
+        return Handler(artworkThread.looper).asCoroutineDispatcher("GeckoMediaSessionDelegateDispatcher")
     }
 
     override fun onFeatures(
