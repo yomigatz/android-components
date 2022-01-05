@@ -11,6 +11,7 @@ import java.util.ArrayList
 
 /**
  * Stores safe-listed URIs for individual hosts.
+ * 存储各个主机的安全列出的 URI。
  */
 internal class Safelist {
     private val rootNode: SafelistTrie = SafelistTrie.createRootNode()
