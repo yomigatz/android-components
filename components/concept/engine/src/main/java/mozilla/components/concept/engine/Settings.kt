@@ -15,6 +15,7 @@ import kotlin.reflect.KProperty
  * Holds settings of an engine or session. Concrete engine
  * implementations define how these settings are applied i.e.
  * whether a setting is applied on an engine or session instance.
+ * 保存引擎或会话的设置。具体的引擎实现定义了如何应用这些设置，即是在引擎还是会话实例上应用设置。
  */
 @Suppress("UnnecessaryAbstractClass")
 abstract class Settings {

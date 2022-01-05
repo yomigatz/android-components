@@ -16,6 +16,7 @@ interface WebExtensionDelegate {
 
     /**
      * Invoked when a web extension was installed successfully.
+     * 在成功安装 Web 扩展时调用。
      *
      * @param extension The installed extension.
      */
@@ -23,6 +24,7 @@ interface WebExtensionDelegate {
 
     /**
      * Invoked when a web extension was uninstalled successfully.
+     * 在成功卸载 Web 扩展时调用。
      *
      * @param extension The uninstalled extension.
      */
@@ -30,6 +32,7 @@ interface WebExtensionDelegate {
 
     /**
      * Invoked when a web extension was enabled successfully.
+     * 在成功启用 Web 扩展时调用。
      *
      * @param extension The enabled extension.
      */
@@ -54,6 +57,10 @@ interface WebExtensionDelegate {
      * browser.tabs.create. Note that browser.tabs.update and browser.tabs.remove
      * can only be observed using session-specific handlers,
      * see [WebExtension.registerTabHandler].
+     *
+     * 当 Web 扩展尝试通过以下方式打开新选项卡时调用请注意，
+     * browser.tabs.update 和 browser.tabs.remove 只能使用特定于会话的处理程序进行观察，
+     * 请参阅 [WebExtension.registerTabHandler].
      *
      * @param extension The [WebExtension] that wants to open a new tab.
      * @param engineSession an instance of engine session to open a new tab with.

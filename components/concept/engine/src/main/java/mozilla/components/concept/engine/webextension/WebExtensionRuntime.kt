@@ -15,6 +15,7 @@ interface WebExtensionRuntime {
 
     /**
      * Installs the provided extension in this engine.
+     * 在此引擎中安装提供的扩展。
      *
      * @param id the unique ID of the extension.
      * @param url the url pointing to either a resources path for locating the extension
@@ -40,6 +41,7 @@ interface WebExtensionRuntime {
 
     /**
      * Updates the provided [extension] if a new version is available.
+     * 如果有新版本可用，则更新提供的 [extension]。
      *
      * @param extension the extension to be updated.
      * @param onSuccess (optional) callback invoked if the extension was updated successfully,
@@ -60,6 +62,7 @@ interface WebExtensionRuntime {
 
     /**
      * Uninstalls the provided extension from this engine.
+     * 从此引擎中卸载提供的扩展。
      *
      * @param ext the [WebExtension] to uninstall.
      * @param onSuccess (optional) callback invoked if the extension was uninstalled successfully.
@@ -75,6 +78,7 @@ interface WebExtensionRuntime {
 
     /**
      * Lists the currently installed web extensions in this engine.
+     * 列出此引擎中当前安装的 Web 扩展。
      *
      * @param onSuccess callback invoked with the list of of installed [WebExtension]s.
      * @param onError (optional) callback invoked if there was an error querying
@@ -89,6 +93,7 @@ interface WebExtensionRuntime {
     /**
      * Enables the provided [WebExtension]. If the extension is already enabled the [onSuccess]
      * callback will be invoked, but this method has no effect on the extension.
+     * 启用提供的 [WebExtension]。如果扩展已启用，则将调用 [onSuccess] 回调，但此方法对扩展没有影响。
      *
      * @param extension the extension to enable.
      * @param source [EnableSource] to indicate why the extension is enabled.
@@ -107,6 +112,7 @@ interface WebExtensionRuntime {
     /**
      * Disables the provided [WebExtension]. If the extension is already disabled the [onSuccess]
      * callback will be invoked, but this method has no effect on the extension.
+     * 禁用提供的 [WebExtension]。如果扩展已禁用，则将调用 [onSuccess] 回调，但此方法对扩展没有影响。
      *
      * @param extension the extension to disable.
      * @param source [EnableSource] to indicate why the extension is disabled.
@@ -125,6 +131,7 @@ interface WebExtensionRuntime {
     /**
      * Registers a [WebExtensionDelegate] to be notified of engine events
      * related to web extensions
+     * 注册一个 [WebExtensionDelegate] 以接收与 Web 扩展相关的引擎事件的通知
      *
      * @param webExtensionDelegate callback to be invoked for web extension events.
      */
@@ -134,6 +141,7 @@ interface WebExtensionRuntime {
 
     /**
      * Sets whether the provided [WebExtension] should be allowed to run in private browsing or not.
+     * 设置是否应允许提供的 [WebExtension] 在隐私浏览中运行。
      *
      * @param extension the [WebExtension] instance to modify.
      * @param allowed true if this extension should be allowed to run in private browsing pages, false otherwise.

@@ -9,7 +9,9 @@ package mozilla.components.concept.engine.media
  * 可由 Web 内容使用的录制设备。
  *
  * @property type The type of recording device (e.g. camera or microphone)
+ *                  录音设备的类型（例如摄像头或麦克风）
  * @property status The status of the recording device (e.g. whether this device is recording)
+ *                  录制设备的状态（例如，此设备是否正在录制）
  */
 data class RecordingDevice(
     val type: Type,

@@ -17,6 +17,7 @@ private val whitespace = "\\s+".toRegex()
 
 /**
  * Parses the icons array from a web app manifest.
+ * 分析 Web 应用清单中的图标数组。
  */
 internal fun parseIcons(json: JSONObject): List<WebAppManifest.Icon> {
     val array = json.optJSONArray("icons") ?: return emptyList()
@@ -39,8 +40,9 @@ internal fun parseIcons(json: JSONObject): List<WebAppManifest.Icon> {
 
 /**
  * Parses a string set, which is expressed as either a space-delimited string or JSONArray of strings.
- *
+ * 解析字符串集，该字符串集表示为空格分隔的字符串或字符串的 JSON 数组。
  * Gecko returns a JSONArray to represent the intermediate infra type for some properties.
+ * Gecko 返回 JSONArray 来表示某些属性的中间下层类型。
  */
 private fun parseStringSet(set: Any?): Sequence<String>? = when (set) {
     is String -> set.split(whitespace).asSequence()

@@ -744,6 +744,7 @@ sealed class ContentAction : BrowserAction() {
 
     /**
      * Sets the list of active recording devices (webcam, microphone, ..) used by web content.
+     * 设置 Web 内容使用的活动录制设备（网络摄像头、麦克风等）的列表。
      */
     data class SetRecordingDevices(
         val sessionId: String,

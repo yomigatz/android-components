@@ -9,6 +9,7 @@ import kotlinx.coroutines.Deferred
 
 /**
  * Represents an async operation that can be cancelled.
+ * 表示可以取消的异步操作。
  */
 interface CancellableOperation {
 

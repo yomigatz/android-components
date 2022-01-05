@@ -18,10 +18,12 @@ import org.json.JSONObject
 
 /**
  * Parser for constructing a [WebAppManifest] from JSON.
+ * 用于从 JSON 构造 [WebAppManifest] 的解析器。
  */
 class WebAppManifestParser {
     /**
      * A parsing result.
+     * 解析结果。
      */
     sealed class Result {
         /**

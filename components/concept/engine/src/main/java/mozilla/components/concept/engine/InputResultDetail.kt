@@ -9,12 +9,14 @@ import androidx.annotation.VisibleForTesting
 
 /**
  * Don't yet have a response from the browser about how the touch was handled.
+ * 浏览器尚未收到有关触摸处理方式的响应。
  */
 const val INPUT_HANDLING_UNKNOWN = -1
 
 // The below top-level values are following the same from [org.mozilla.geckoview.PanZoomController]
 /**
  * The content has no scrollable element.
+ * 内容没有可滚动的元素。
  *
  * @see [InputResultDetail.isTouchUnhandled]
  */

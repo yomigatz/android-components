@@ -10,6 +10,8 @@ import kotlin.math.min
 /**
  * Represents dimensions for an image.
  * Corresponds to values of the "sizes" HTML attribute.
+ * 表示图像的尺寸。
+ * 对应于"大小"HTML 属性的值。
  *
  * @property width Width of the image.
  * @property height Height of the image.
