@@ -12,6 +12,7 @@ import mozilla.components.concept.engine.permission.SitePermissionsStorage.Permi
 
 /**
  * A site permissions and its state.
+ * 网站权限及其状态。
  */
 @SuppressLint("ParcelCreator")
 @Parcelize

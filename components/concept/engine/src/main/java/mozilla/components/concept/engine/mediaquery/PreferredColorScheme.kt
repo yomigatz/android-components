@@ -7,6 +7,7 @@ package mozilla.components.concept.engine.mediaquery
 /**
  * A simple data class used to suggest to page content that the user prefers a particular color
  * scheme.
+ * 一个简单的数据类，用于向页面建议用户喜欢特定配色方案的内容。
  */
 sealed class PreferredColorScheme {
     companion object

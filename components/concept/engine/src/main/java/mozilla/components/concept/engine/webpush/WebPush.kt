@@ -8,6 +8,7 @@ import mozilla.components.concept.engine.Engine
 
 /**
  * A handler for all WebPush messages and [subscriptions][0] to be delivered to the [Engine].
+ * 所有 WebPush 消息和 [订阅][0] 传递到 [引擎] 的处理程序。
  *
  * [0]: https://developer.mozilla.org/en-US/docs/Web/API/PushSubscription
  */

@@ -7,6 +7,7 @@ package mozilla.components.concept.engine.permission
 /**
  * Represents a permission request, used when engines need access to protected
  * resources. Every request must be handled by either calling [grant] or [reject].
+ * 表示一个权限请求，在引擎需要访问受保护的资源时使用。每个请求都必须通过调用 [grant] 或 [deny] 来处理。
  */
 interface PermissionRequest {
     /**
@@ -58,6 +59,7 @@ interface PermissionRequest {
 
 /**
  * Represents all the different supported permission types.
+ * 表示所有不同的受支持权限类型。
  *
  * @property id an optional native engine-specific ID of this permission.
  * @property desc an optional description of what this permission type is for.

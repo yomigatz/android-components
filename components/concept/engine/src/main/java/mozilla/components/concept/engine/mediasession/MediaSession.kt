@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 
 /**
  * Value type that represents a media session that is present on the currently displayed page in a session.
+ * 值类型，表示存在于会话中当前显示的页面上的媒体会话。
  */
 class MediaSession {
 
@@ -102,6 +103,7 @@ class MediaSession {
 
     /**
      * A simplified media session playback state.
+     * 简化的媒体会话播放状态。
      */
     enum class PlaybackState {
         /**

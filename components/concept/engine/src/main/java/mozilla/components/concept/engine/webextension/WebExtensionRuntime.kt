@@ -9,6 +9,7 @@ import java.lang.UnsupportedOperationException
 
 /**
  * Entry point for interacting with the web extensions.
+ * 用于与 Web 扩展交互的入口点。
  */
 interface WebExtensionRuntime {
 

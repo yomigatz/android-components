@@ -10,6 +10,7 @@ import mozilla.components.concept.engine.EngineSession
 
 /**
  * Interface for classes that want to intercept load requests to allow custom behavior.
+ * 要拦截加载请求以允许自定义行为的类的接口。
  */
 interface RequestInterceptor {
 

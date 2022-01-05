@@ -9,6 +9,7 @@ import mozilla.components.concept.engine.EngineSession.TrackingProtectionPolicy.
 
 /**
  * Represents a blocked content tracker.
+ * 表示被阻止的内容跟踪器。
  * @property url The URL of the tracker.
  * @property trackingCategories The anti-tracking category types of the blocked resource.
  * @property cookiePolicies The cookie types of the blocked resource.

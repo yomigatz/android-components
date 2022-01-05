@@ -6,6 +6,7 @@ package mozilla.components.concept.engine.media
 
 /**
  * A recording device that can be used by web content.
+ * 可由 Web 内容使用的录制设备。
  *
  * @property type The type of recording device (e.g. camera or microphone)
  * @property status The status of the recording device (e.g. whether this device is recording)

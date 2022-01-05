@@ -9,9 +9,11 @@ import mozilla.components.concept.storage.PageVisit
 /**
  * An interface used for providing history information to an engine (e.g. for link highlighting),
  * and receiving history updates from the engine (visits to URLs, title changes).
+ * 用于向引擎提供历史记录信息（例如，用于链接突出显示）以及从引擎接收历史记录更新（访问 URL、标题更改）的界面。
  *
  * Even though this interface is defined at the "concept" layer, its get* methods are tailored to
  * two types of engines which we support (system's WebView and GeckoView).
+ * 尽管此接口是在"概念"层定义的，但其 get* 方法是针对我们支持的两种类型的引擎（系统的 WebView 和 GeckoView）量身定制的。
  */
 interface HistoryTrackingDelegate {
     /**

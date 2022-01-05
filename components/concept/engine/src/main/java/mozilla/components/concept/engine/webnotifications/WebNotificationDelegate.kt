@@ -7,6 +7,7 @@ package mozilla.components.concept.engine.webnotifications
 /**
  * Notifies applications or other components of engine events related to web
  * notifications e.g. an notification is to be shown or is to be closed
+ * 通知应用程序或其他组件与 Web 通知相关的引擎事件，例如，将显示通知或关闭通知
  */
 interface WebNotificationDelegate {
     /**

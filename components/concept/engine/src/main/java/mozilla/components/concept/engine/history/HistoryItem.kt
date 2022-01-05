@@ -6,6 +6,7 @@ package mozilla.components.concept.engine.history
 
 /**
  * A representation of an entry in browser history.
+ * 浏览器历史记录中条目的表示形式。
  * @property title The title of this history element.
  * @property uri The URI of this history element.
  */

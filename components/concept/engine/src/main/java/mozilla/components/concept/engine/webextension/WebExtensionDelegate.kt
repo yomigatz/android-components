@@ -10,6 +10,7 @@ import mozilla.components.concept.engine.EngineSession
  * Notifies applications or other components of engine events related to web
  * extensions e.g. an extension was installed, or an extension wants to open
  * a new tab.
+ * 通知应用程序或其他组件与 Web 扩展相关的引擎事件，例如，安装了扩展，或者扩展想要打开新选项卡。
  */
 interface WebExtensionDelegate {
 

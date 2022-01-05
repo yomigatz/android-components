@@ -15,6 +15,7 @@ import java.util.UUID
 
 /**
  * Value type that represents a request for showing a native dialog for prompt web content.
+ * 值类型，表示用于显示提示 Web 内容的本机对话框的请求。
  *
  * @param shouldDismissOnLoad Whether or not the dialog should automatically be dismissed when a new page is loaded.
  * Defaults to `true`.

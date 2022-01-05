@@ -6,6 +6,7 @@ package mozilla.components.concept.engine.selection
 
 /**
  * Generic delegate for handling the context menu that is shown when text is selected.
+ * 用于处理选择文本时显示的上下文菜单的通用委托。
  */
 interface SelectionActionDelegate {
     /**

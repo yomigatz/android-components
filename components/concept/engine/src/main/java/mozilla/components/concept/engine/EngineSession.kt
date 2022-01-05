@@ -25,6 +25,7 @@ import mozilla.components.support.base.observer.ObserverRegistry
  * Class representing a single engine session.
  *
  * In browsers usually a session corresponds to a tab.
+ * 表示单个引擎会话的类。在浏览器中，会话通常对应于选项卡。
  */
 @Suppress("TooManyFunctions")
 abstract class EngineSession(
@@ -349,22 +350,27 @@ abstract class EngineSession(
 
             /**
              * Blocks advertisement trackers from the ads-track-digest256 list.
+             * 从广告跟踪摘要256 列表中阻止广告跟踪器。
              */
             AD(1 shl 1),
 
             /**
              * Blocks analytics trackers from the analytics-track-digest256 list.
+             * 从 analytics-track-digest256 列表中阻止分析跟踪器。
              */
             ANALYTICS(1 shl 2),
 
             /**
              * Blocks social trackers from the social-track-digest256 list.
+             * 从社交跟踪摘要256 列表中阻止社交跟踪器
              */
             SOCIAL(1 shl 3),
 
             /**
              * Blocks content trackers from the content-track-digest256 list.
              * May cause issues with some web sites.
+             * 阻止内容跟踪器从内容跟踪摘要256 列表中。
+             * 可能会导致某些网站出现问题。
              */
             CONTENT(1 shl 4),
 
@@ -373,21 +379,25 @@ abstract class EngineSession(
 
             /**
              * Blocks cryptocurrency miners.
+             * 阻止加密货币矿工。
              */
             CRYPTOMINING(1 shl 6),
 
             /**
              * Blocks fingerprinting trackers.
+             * 阻止指纹跟踪器。
              */
             FINGERPRINTING(1 shl 7),
 
             /**
              * Blocks social trackers from the social-tracking-protection-digest256 list.
+             * 从社交跟踪-保护-摘要256 列表中阻止社交跟踪器。
              */
             MOZILLA_SOCIAL(1 shl 8),
 
             /**
              * Blocks content like scripts and sub-resources.
+             * 阻止脚本和子资源等内容。
              */
             SCRIPTS_AND_SUB_RESOURCES(1 shl 31),
 
