@@ -6,10 +6,12 @@ package mozilla.components.concept.engine
 
 /**
  * Contract to indicate how objects with the ability to clear data should behave.
+ * 协定以指示具有清除数据能力的对象的行为方式。
  */
 interface DataCleanable {
     /**
      * Clears browsing data stored.
+     * 清除存储的浏览数据。
      *
      * @param data the type of data that should be cleared, defaults to all.
      * @param host (optional) name of the host for which data should be cleared. If

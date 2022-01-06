@@ -81,6 +81,7 @@ class SystemEngineView @JvmOverloads constructor(
 
     /**
      * Render the content of the given session.
+     * 呈现给定会话的内容。
      */
     override fun render(session: EngineSession) {
         removeAllViews()

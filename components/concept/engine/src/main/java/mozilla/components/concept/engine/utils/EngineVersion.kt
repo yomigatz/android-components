@@ -6,6 +6,7 @@ package mozilla.components.concept.engine.utils
 
 /**
  * Data class for engine versions using semantic versioning (major.minor.patch).
+ * 使用语义版本控制的引擎版本的数据类（major.minor.patch）。
  *
  * @param major Major version number
  * @param minor Minor version number

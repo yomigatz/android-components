@@ -9,10 +9,13 @@ import mozilla.components.concept.engine.manifest.WebAppManifest.ExternalApplica
 
 /**
  * The web app manifest provides information about an application (such as its name, author, icon, and description).
+ * Web 应用清单提供有关应用程序的信息（如其名称、作者、图标和说明）。
  *
  * Web app manifests are part of a collection of web technologies called progressive web apps, which are websites
  * that can be installed to a device’s homescreen without an app store, along with other capabilities like working
  * offline and receiving push notifications.
+ * Web 应用清单是称为渐进式 Web 应用的 Web 技术集合的一部分，这些 Web 技术是无需应用商店即可安装到设备主屏幕上的网站，
+ * 以及其他功能（如脱机工作和接收推送通知）。
  *
  * https://developer.mozilla.org/en-US/docs/Web/Manifest
  * https://www.w3.org/TR/appmanifest/

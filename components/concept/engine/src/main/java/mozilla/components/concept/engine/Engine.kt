@@ -21,11 +21,13 @@ import org.json.JSONObject
 
 /**
  * Entry point for interacting with the engine implementation.
+ * 用于与引擎实现交互的入口点。
  */
 interface Engine : WebExtensionRuntime, DataCleanable {
 
     /**
      * Describes a combination of browsing data types stored by the engine.
+     * 描述引擎存储的浏览数据类型的组合。
      */
     class BrowsingData internal constructor(val types: Int) {
         companion object {

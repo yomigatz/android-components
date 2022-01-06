@@ -6,6 +6,7 @@ package mozilla.components.concept.engine.webnotifications
 
 /**
  * A notification sent by the Web Notifications API.
+ * 由 Web 通知 API 发送的通知。
  *
  * @property title Title of the notification to be displayed in the first row.
  * @property tag Tag used to identify the notification.

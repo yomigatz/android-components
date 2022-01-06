@@ -17,6 +17,7 @@ import java.util.LinkedList
 /**
  * Provides functionality to process categorized URL block/safe lists and match
  * URLs against these lists.
+ * 提供处理分类的 URL 阻止/安全列表以及将 URL 与这些列表进行匹配的功能。
  */
 class UrlMatcher {
     private val categories: MutableMap<String, Trie>

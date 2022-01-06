@@ -8,11 +8,13 @@ import mozilla.components.concept.engine.EngineSession
 
 /**
  * A contract that define how a tracking protection storage must behave.
+ * 定义跟踪保护存储必须如何运行的协定。
  */
 interface TrackingProtectionExceptionStorage {
 
     /**
      * Fetch all domains that will be ignored for tracking protection.
+     * 提取将忽略的所有域以跟踪保护。
      * @param onResult A callback to inform that the domains in the exception list has been fetched,
      * it provides a list of all the domains that are on the exception list, if there are none
      * domains in the exception list, an empty list will be provided.

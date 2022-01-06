@@ -8,6 +8,7 @@ import androidx.paging.DataSource
 
 /**
  * Represents a storage to store [SitePermissions].
+ * 表示要存储 [站点权限] 的存储。
  */
 interface SitePermissionsStorage {
     /**

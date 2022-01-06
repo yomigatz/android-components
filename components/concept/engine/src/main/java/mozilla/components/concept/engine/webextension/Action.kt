@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 
 /**
  * Value type that represents the state of a browser or page action within a [WebExtension].
+ * 值类型，表示 [WebExtension] 中浏览器或页面操作的状态。
  *
  * @property title The title of the browser action to be visible in the user interface.
  * @property enabled Indicates if the browser action should be enabled or disabled.

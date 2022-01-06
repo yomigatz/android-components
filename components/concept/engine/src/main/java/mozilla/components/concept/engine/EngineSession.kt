@@ -25,6 +25,8 @@ import mozilla.components.support.base.observer.ObserverRegistry
  * Class representing a single engine session.
  *
  * In browsers usually a session corresponds to a tab.
+ * 表示单个引擎会话的类。
+ * 在浏览器中，会话通常对应于选项卡。
  */
 @Suppress("TooManyFunctions")
 abstract class EngineSession(
@@ -32,6 +34,7 @@ abstract class EngineSession(
 ) : Observable<EngineSession.Observer> by delegate, DataCleanable {
     /**
      * Interface to be implemented by classes that want to observe this engine session.
+     * 由要观察此引擎会话的类实现的接口。
      */
     interface Observer {
         fun onLocationChange(url: String) = Unit
@@ -39,6 +42,7 @@ abstract class EngineSession(
 
         /**
          * Event to indicate a preview image URL was discovered in the content after the content loaded.
+         * 指示加载内容后在内容中发现预览图像 URL 的事件。
          *
          * @param previewImageUrl The preview image URL sent from the content.
          */
@@ -55,15 +59,18 @@ abstract class EngineSession(
 
         /**
          * Event to indicate whether or not this [EngineSession] should be [excluded] from tracking protection.
+         * 指示是否应将此 [EngineSession] 从跟踪保护中 [excluded] 的事件。
          */
         fun onExcludedOnTrackingProtectionChange(excluded: Boolean) = Unit
 
         /**
          * Event to indicate that this session has had it's first engine contentful paint of page content.
+         * 事件，指示此会话已首次对页面内容进行了引擎内容的绘制。
          */
         fun onFirstContentfulPaint() = Unit
         /**
          * Event to indicate that this session has had it's paint status reset.
+         * 指示此会话已重置其绘制状态的事件。
          */
         fun onPaintStatusReset() = Unit
         fun onLongPress(hitResult: HitResult) = Unit
@@ -73,7 +80,8 @@ abstract class EngineSession(
         fun onFullScreenChange(enabled: Boolean) = Unit
 
         /**
-         * @param layoutInDisplayCutoutMode value of defined in https://developer.android.com/reference/android/view/WindowManager.LayoutParams#layoutInDisplayCutoutMode
+         * @param layoutInDisplayCutoutMode value of defined in
+         * https://developer.android.com/reference/android/view/WindowManager.LayoutParams#layoutInDisplayCutoutMode
          */
         fun onMetaViewportFitChanged(layoutInDisplayCutoutMode: Int) = Unit
         fun onThumbnailChange(bitmap: Bitmap?) = Unit
@@ -84,23 +92,28 @@ abstract class EngineSession(
 
         /**
          * The engine has requested a prompt be dismissed.
+         * 引擎已请求消除提示。
          */
         fun onPromptDismissed(promptRequest: PromptRequest) = Unit
 
         /**
          * User cancelled a repost prompt. Page will not be reloaded.
+         * 用户取消了重新发布提示。页面将不会重新加载。
          */
         fun onRepostPromptCancelled() = Unit
 
         /**
          * User cancelled a beforeunload prompt. Navigating to another page is cancelled.
+         * 用户取消了"卸载前"提示。导航到另一个页面被取消。
          */
         fun onBeforeUnloadPromptDenied() = Unit
 
         /**
          * The engine received a request to open or close a window.
+         * 引擎收到打开或关闭窗口的请求。
          *
          * @param windowRequest the request to describing the required window action.
+         *                         描述所需窗口操作的请求。
          */
         fun onWindowRequest(windowRequest: WindowRequest) = Unit
 
@@ -349,22 +362,27 @@ abstract class EngineSession(
 
             /**
              * Blocks advertisement trackers from the ads-track-digest256 list.
+             * 从广告跟踪摘要256 列表中阻止广告跟踪器。
              */
             AD(1 shl 1),
 
             /**
              * Blocks analytics trackers from the analytics-track-digest256 list.
+             * 从 analytics-track-digest256 列表中阻止分析跟踪器。
              */
             ANALYTICS(1 shl 2),
 
             /**
              * Blocks social trackers from the social-track-digest256 list.
+             * 从社交跟踪摘要256 列表中阻止社交跟踪器
              */
             SOCIAL(1 shl 3),
 
             /**
              * Blocks content trackers from the content-track-digest256 list.
              * May cause issues with some web sites.
+             * 阻止内容跟踪器从内容跟踪摘要256 列表中。
+             * 可能会导致某些网站出现问题。
              */
             CONTENT(1 shl 4),
 
@@ -373,21 +391,25 @@ abstract class EngineSession(
 
             /**
              * Blocks cryptocurrency miners.
+             * 阻止加密货币矿工。
              */
             CRYPTOMINING(1 shl 6),
 
             /**
              * Blocks fingerprinting trackers.
+             * 阻止指纹跟踪器。
              */
             FINGERPRINTING(1 shl 7),
 
             /**
              * Blocks social trackers from the social-tracking-protection-digest256 list.
+             * 从社交跟踪-保护-摘要256 列表中阻止社交跟踪器。
              */
             MOZILLA_SOCIAL(1 shl 8),
 
             /**
              * Blocks content like scripts and sub-resources.
+             * 阻止脚本和子资源等内容。
              */
             SCRIPTS_AND_SUB_RESOURCES(1 shl 31),
 

@@ -12,11 +12,13 @@ package mozilla.components.concept.engine
 sealed class HitResult(open val src: String) {
     /**
      * Default type if we're unable to match the type to anything. It may or may not have a src.
+     * 表示通过长按元素可以找到的所有不同受支持的数据类型。
      */
     data class UNKNOWN(override val src: String) : HitResult(src)
 
     /**
      * If the HTML element was of type 'HTMLImageElement'.
+     * 如果 HTML 元素的类型为"HTMLImageElement"。
      */
     data class IMAGE(override val src: String, val title: String? = null) : HitResult(src)
 

@@ -6,5 +6,6 @@ package mozilla.components.concept.engine.search
 
 /**
  * Value type that represents a request for showing a search to the user.
+ * 值类型，表示向用户显示搜索的请求。
  */
 data class SearchRequest(val isPrivate: Boolean, val query: String)

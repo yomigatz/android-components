@@ -9,6 +9,7 @@ import android.os.Parcelable
 
 /**
  * Value type that represents a select option, optgroup or menuitem html element.
+ * 表示选择选项、选择组或菜单项 html 元素的值类型。
  *
  * @property id of the option, optgroup or menuitem.
  * @property enable indicate if item should be selectable or not.

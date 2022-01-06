@@ -8,6 +8,7 @@ import mozilla.components.concept.engine.EngineSession
 
 /**
  * Represents a request to open or close a browser window.
+ * 表示打开或关闭浏览器窗口的请求。
  */
 interface WindowRequest {
 

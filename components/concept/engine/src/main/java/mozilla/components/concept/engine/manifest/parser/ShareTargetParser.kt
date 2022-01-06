@@ -16,6 +16,7 @@ internal object ShareTargetParser {
 
     /**
      * Parses a share target inside a web app manifest.
+     * 分析 Web 应用清单内的共享目标。
      */
     fun parse(json: JSONObject?): ShareTarget? {
         val action = json?.tryGetString("action") ?: return null
@@ -42,6 +43,7 @@ internal object ShareTargetParser {
 
     /**
      * Serializes a share target to JSON for a web app manifest.
+     * 将共享目标序列化为 Web 应用清单的 JSON。
      */
     fun serialize(shareTarget: ShareTarget?): JSONObject? {
         shareTarget ?: return null
