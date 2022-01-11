@@ -33,6 +33,7 @@ interface WindowRequest {
     /**
      * Prepares an [EngineSession] for the window request. This is used to
      * attach state (e.g. a native session or view) to the engine session.
+     * 为窗口请求准备 [EngineSession]。这用于将状态（例如本机会话或视图）附加到引擎会话。
      *
      * @return the prepared and ready-to-use [EngineSession].
      */

@@ -10,6 +10,10 @@ package mozilla.components.browser.engine.system.matcher
  * would be to copy the string to reverse (e.g. using StringBuffer.reverse()).
  * This seems wasteful when we only read our Strings character by character,
  * in which case can just transpose positions as needed.
+ * * 一个字符串包装实用程序，允许有效的字符串反转。我们经常需要反转字符串。
+ * 在Java中执行此操作的标准方法是将字符串复制到反向（例如，使用StringBuffer.reverse（））。
+ * 当我们只逐个字符地读取字符串时，这似乎是浪费，在这种情况下，可以根据需要转置位置。
+ *
  */
 abstract class ReversibleString private constructor(
     protected val string: String,
