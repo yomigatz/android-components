@@ -17,6 +17,7 @@ import mozilla.components.lib.crash.R
 import mozilla.components.lib.crash.prompt.CrashPrompt
 import mozilla.components.lib.crash.service.SendCrashReportService
 import mozilla.components.support.base.ids.SharedIdsHelper
+import mozilla.components.support.utils.PendingIntentUtils
 import mozilla.components.support.utils.asForegroundServicePendingIntent
 
 private const val NOTIFICATION_SDK_LEVEL = 29 // On Android Q+ we show a notification instead of a prompt
@@ -34,19 +35,31 @@ internal class CrashNotification(
     fun show() {
         val pendingIntent = PendingIntent.getActivity(
             context, SharedIdsHelper.getNextIdForTag(context, PENDING_INTENT_TAG),
-            CrashPrompt.createIntent(context, crash), 0
+            CrashPrompt.createIntent(context, crash), getNotificationFlag()
         )
 
         val reportPendingIntent = SendCrashReportService
             .createReportIntent(context, crash, NOTIFICATION_TAG, NOTIFICATION_ID)
             .asForegroundServicePendingIntent(
-                context, SharedIdsHelper.getNextIdForTag(context, PENDING_INTENT_TAG)
+                context, SharedIdsHelper.getNextIdForTag(context, PENDING_INTENT_TAG),
+                getNotificationFlag()
             )
 
         val channel = ensureChannelExists(context)
 
+        val title = if (crash is Crash.NativeCodeCrash &&
+            crash.processType == Crash.NativeCodeCrash.PROCESS_TYPE_BACKGROUND_CHILD
+        ) {
+            context.getString(
+                R.string.mozac_lib_crash_background_process_notification_title,
+                configuration.appName
+            )
+        } else {
+            context.getString(R.string.mozac_lib_crash_dialog_title, configuration.appName)
+        }
+
         val notification = NotificationCompat.Builder(context, channel)
-            .setContentTitle(context.getString(R.string.mozac_lib_crash_dialog_title, configuration.appName))
+            .setContentTitle(title)
             .setSmallIcon(R.drawable.mozac_lib_crash_notification)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
             .setCategory(NotificationCompat.CATEGORY_ERROR)
@@ -71,10 +84,18 @@ internal class CrashNotification(
          * services launching activities in Q+. On those system we may need to show a notification for the given [crash]
          * and launch the reporter from the notification.
          */
-        fun shouldShowNotificationInsteadOfPrompt(crash: Crash, sdkLevel: Int = Build.VERSION.SDK_INT): Boolean {
+        fun shouldShowNotificationInsteadOfPrompt(
+            crash: Crash,
+            sdkLevel: Int = Build.VERSION.SDK_INT
+        ): Boolean {
             return when {
                 // We can always launch an activity from a background service pre Android Q.
                 sdkLevel < NOTIFICATION_SDK_LEVEL -> false
+
+                // We may not be able to launch an activity if a background process crash occurs
+                // while the application is in the background.
+                crash is Crash.NativeCodeCrash && crash.processType ==
+                    Crash.NativeCodeCrash.PROCESS_TYPE_BACKGROUND_CHILD -> true
 
                 // An uncaught exception is crashing the app and we may not be able to launch an activity from here.
                 crash is Crash.UncaughtExceptionCrash -> true
@@ -102,4 +123,6 @@ internal class CrashNotification(
             return NOTIFICATION_CHANNEL_ID
         }
     }
+
+    private fun getNotificationFlag() = PendingIntentUtils.defaultFlags
 }

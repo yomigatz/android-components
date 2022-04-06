@@ -8,6 +8,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Bitmap
+import android.os.Build
+import android.view.textclassifier.TextClassifier
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toBitmap
 import mozilla.components.concept.awesomebar.AwesomeBar
@@ -19,6 +21,7 @@ import mozilla.components.support.utils.WebURLFinder
 import java.util.UUID
 
 private const val MIME_TYPE_TEXT_PLAIN = "text/plain"
+private const val MINIMUM_CONFIDENCE_SCORE_FOR_URL = 0.7F
 
 /**
  * An [AwesomeBar.SuggestionProvider] implementation that returns a suggestions for an URL in the clipboard (if there's
@@ -54,10 +57,9 @@ class ClipboardSuggestionProvider(
         if ((requireEmptyText && text.isEmpty()) || !requireEmptyText) createClipboardSuggestion() else emptyList()
 
     private fun createClipboardSuggestion(): List<AwesomeBar.Suggestion> {
-        val url = getTextFromClipboard(clipboardManager)?.let {
-            findUrl(it)
-        } ?: return emptyList()
+        val clipboardUrl = getUrlFromClipboard(clipboardManager)
 
+        val url = clipboardUrl?.let { findUrl(it) } ?: return emptyList()
         engine?.speculativeConnect(url)
 
         return listOf(
@@ -83,19 +85,39 @@ private fun findUrl(text: String): String? {
     return finder.bestWebURL()
 }
 
+private fun getUrlFromClipboard(clipboardManager: ClipboardManager): String? {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        val description = clipboardManager.primaryClipDescription
+        // An IllegalStateException may be thrown if the clipboard text is too long.
+        val score =
+            try {
+                description?.getConfidenceScore(TextClassifier.TYPE_URL) ?: 0F
+            } catch (e: IllegalStateException) {
+                0F
+            }
+        return if (score >= MINIMUM_CONFIDENCE_SCORE_FOR_URL) {
+            getTextFromClipboard(clipboardManager)
+        } else {
+            null
+        }
+    } else {
+        return getTextFromClipboard(clipboardManager)
+    }
+}
+
 private fun getTextFromClipboard(clipboardManager: ClipboardManager): String? {
-    if (clipboardManager.isPrimaryClipEmpty() || !clipboardManager.isPrimaryClipPlainText()) {
+    val primaryClip = clipboardManager.primaryClip
+
+    if (primaryClip?.itemCount == 0 || !clipboardManager.isPrimaryClipPlainText()) {
         // We only care about a primary clip with type "text/plain"
         return null
     }
 
-    return clipboardManager.firstPrimaryClipItem?.text?.toString()
+    return primaryClip?.firstClipItemText
 }
 
 private fun ClipboardManager.isPrimaryClipPlainText() =
     primaryClipDescription?.hasMimeType(MIME_TYPE_TEXT_PLAIN) ?: false
 
-private fun ClipboardManager.isPrimaryClipEmpty() = primaryClip?.itemCount == 0
-
-private val ClipboardManager.firstPrimaryClipItem: ClipData.Item?
-    get() = primaryClip?.getItemAt(0)
+private val ClipData.firstClipItemText: String
+    get() = getItemAt(0).text.toString()

@@ -4,29 +4,147 @@ title: Changelog
 permalink: /changelog/
 ---
 
-# 98.0.0 (In Development)
-* [Commits](https://github.com/mozilla-mobile/android-components/compare/v97.0.0...main)
-* [Milestone](https://github.com/mozilla-mobile/android-components/milestone/145?closed=1)
+# 101.0.0 (In Development)
+* [Commits](https://github.com/mozilla-mobile/android-components/compare/v100.0.0...main)
+* [Milestone](https://github.com/mozilla-mobile/android-components/milestone/148?closed=1)
 * [Dependencies](https://github.com/mozilla-mobile/android-components/blob/main/buildSrc/src/main/java/Dependencies.kt)
 * [Gecko](https://github.com/mozilla-mobile/android-components/blob/main/buildSrc/src/main/java/Gecko.kt)
 * [Configuration](https://github.com/mozilla-mobile/android-components/blob/main/.config.yml)
 
+# 100.0.0
+* [Commits](https://github.com/mozilla-mobile/android-components/compare/v99.0.0...v100.0.0)
+* [Milestone](https://github.com/mozilla-mobile/android-components/milestone/147?closed=1)
+* [Dependencies](https://github.com/mozilla-mobile/android-components/blob/v100.0.0/buildSrc/src/main/java/Dependencies.kt)
+* [Gecko](https://github.com/mozilla-mobile/android-components/blob/v100.0.0/buildSrc/src/main/java/Gecko.kt)
+* [Configuration](https://github.com/mozilla-mobile/android-components/blob/v100.0.0/.config.yml)
+
+* **browser-errorpages**
+  * 🌟 The https-only error page will now show also an image.
+
+* **service-pocket**
+  * 🚒 Bug fixed [issue #11905](https://github.com/mozilla-mobile/android-components/issues/11905) - Delete existing stories when their `imageUrl` is updated allowing those stories to be replaced.
+
+* **feature-serviceworker**
+  * 🆕 New `ServiceWorkerSupport` component for handling all service workers' events and callbacks. Currently this is supported only for using `GeckoEngine`.
+
+* **feature-autofill**
+  * ⚠️ **This is a breaking change**: Removed unused `context` parameter in `FxaWebChannelFeature`. [#11864](https://github.com/mozilla-mobile/android-components/pull/11864).
+
+* **feature-autofill**
+  * 🚒 Bug fixed [issue #11869](https://github.com/mozilla-mobile/android-components/issues/11869) - Fix regression causing autofill to not work after unlocking the app doing the autofill or after accepting that the authenticity of the autofill target could not be verified.
+
+* **feature-tab-collections**
+  * ⚠️ **This is a breaking change**: Removed unused `reader` parameter in `TabCollectionStorage`. [#11864](https://github.com/mozilla-mobile/android-components/pull/11864).
+
+* **feature-contextmenu**
+  * 🚒 Bug fixed [issue #11829](https://github.com/mozilla-mobile/android-components/pull/11830) - To make the additional note visible in landscape mode.
+
+* **feature-intent**
+  * ⚠️ **This is a breaking change**: Removed unused `loadUrlUseCase` parameter in `TabIntentProcessor`. [#11864](https://github.com/mozilla-mobile/android-components/pull/11864).
+
+* **browser-toolbar**
+  * Removed reflective access to non-public SDK APIs controlling the sensitivity of the gesture detector following which sparingly and for very short time a pinch/spread to zoom gesture might be identified first as a scroll gesture and move the toolbar a little before snapping to it's original position.
+  * ⚠️ **This is a breaking change**: Replaced `addEditAction` in `BrowserToolbar` with `addEditActionStart` and `addEditActionEnd` to add actions to the left and right of the URL in edit mode. [#11890](https://github.com/mozilla-mobile/android-components/issues/11890)
+
+* **feature-session**
+   * 🆕 New `ScreenOrientationFeature` to enable support for setting a requested screen orientation as part of supporting the ScreenOrientation web APIs.
+
+* **concept-sync**
+  * 🌟️️ Add `onReady` method to `AccountObserver`, allowing consumers to know when they can start querying account state.
+
+* **service-firefox-accounts**
+  * ⚠️ **This is a breaking change**: `fetchProfile` was removed from `FxaAccountManager`.
+
+* **lib-crash-sentry**
+  * 🌟️️ Add `sendCaughtExceptions` config flag to `SentryService`, allowing consumers to disable submitting caught exceptions. By default it's enabled, maintaining prior behaviour. Useful in projects with high volumes of caught exceptions and multiple release channels.
+  
+* **site-permission-feature**
+  * 🆕 New Add to SitePermissionsFeature a property to set visibility for NotAskAgainCheckBox
+  
+# 99.0.0
+* [Commits](https://github.com/mozilla-mobile/android-components/compare/v98.0.0...v99.0.0)
+* [Milestone](https://github.com/mozilla-mobile/android-components/milestone/146?closed=1)
+* [Dependencies](https://github.com/mozilla-mobile/android-components/blob/v99.0.0/buildSrc/src/main/java/Dependencies.kt)
+* [Gecko](https://github.com/mozilla-mobile/android-components/blob/v99.0.0/buildSrc/src/main/java/Gecko.kt)
+* [Configuration](https://github.com/mozilla-mobile/android-components/blob/v99.0.0/.config.yml)
+
+* **feature-top-sites**
+  * ⚠️ **This is a breaking change**: This changes `fetchProvidedTopSites` in `TopSitesConfig` into a data class `TopSitesProviderConfig` that specifies whether or not to display the top sites from the provider. [#11654](https://github.com/mozilla-mobile/android-components/issues/11654)
+
+* **support-base**
+  * ⚠️ **This is a breaking change**: Refactor `Frequency` out of **feature-addons** and **service-pocket** [#11732](https://github.com/mozilla-mobile/android-components/pull/11732).
+
+* **support-utils**
+  * 🌟️️ **Added new Browsers constant for Fennec `Browsers.FIREFOX_FENNEC_NIGHTLY`.
+  * ⚠️ **This is a breaking change**: `Browsers.FIREFOX_NIGHTLY` now points to `org.mozilla.fenix`, for fennec nightly use `Browsers.FIREFOX_FENNEC_NIGHTLY` [#11682](https://github.com/mozilla-mobile/android-components/pull/11682).
+* **feature-downloads**:
+  * 🚒 Bug fixed [issue #8567](https://github.com/mozilla-mobile/android-components/issues/8567) - Prevent crashes when trying to add to the system databases.
+
+* **concept-engine**
+  * 🌟️️ Add `EngineSessionStateStorage`, describing a storage of `EngineSessionState` instances. 
+
+* **browser-session-storage**
+  * 🌟️️ Add `FileEngineSessionStateStorage`, an implementation of `EngineSessionStateStorage` for persisting engine state outside of the regular RecoverableBrowserState flow.
+
+* **browser-state**
+  * ⚠️ **This is a breaking change**: Shape of `RecoverableTab` changed. There's now a tab-state wrapper called `TabState`; use it when `engineSessionState` isn't necessary right away.
+
+* **feature-recentlyclosed**
+  * 🌟️️ Add `RecentlyClosedTabsStorage`, which knows how to write/read recently closed tabs.
+
+* **feature-tabs**
+  * ⚠️ **This is a breaking change**: `RestoreUseCase` implementation responsible for restoring `RecoverableTab` instances now takes a `TabState` and a `EngineSessionStateStorage` instead (and will read/rehydrate an EngineSessionState prior to restoring).
+
+
+# 98.0.0
+* [Commits](https://github.com/mozilla-mobile/android-components/compare/v97.0.0...v98.0.0)
+* [Milestone](https://github.com/mozilla-mobile/android-components/milestone/145?closed=1)
+* [Dependencies](https://github.com/mozilla-mobile/android-components/v98.0.0/main/buildSrc/src/main/java/Dependencies.kt)
+* [Gecko](https://github.com/mozilla-mobile/android-components/v98.0.0/main/buildSrc/src/main/java/Gecko.kt)
+* [Configuration](https://github.com/mozilla-mobile/android-components/v98.0.0/main/.config.yml)
+
+* **support-utils**
+  * 🌟️️ **Add a `PendingUtils.defaultFlags`** property to ease setting PendingIntent mutability as required for Android 31+.
+
+* **feature-prompts**:
+  * More prompts are dismissable.
+  * ⚠️ **This is a breaking change**: Success / dismiss callbacks are now consistently ordered.
+
+* **feature-search**
+  * Adds the `extraAdServersRegexps` of Baidu to help sending the baidu search telemetry of ads. [#11582](https://github.com/mozilla-mobile/android-components/pull/11582)
+
+* **browser-toolbar**
+  * 🚒 Bug fixed [issue #11499](https://github.com/mozilla-mobile/android-components/issues/11499) - Update tracking protection icon state even when is not displayed
+
+* **browser-toolbar**
+  * 🚒 Bug fixed [issue #11545](https://github.com/mozilla-mobile/android-components/issues/11545) - `clearColorFilter` doesn't work on Api 21, 22, so the default white filter remains set.Use `clearColorFilter` only when the version of API is bigger than 22
+
 * **support-ktx**
   * 🚒 Bug fixed [issue #11527](https://github.com/mozilla-mobile/android-components/issues/11527) - Fix some situations in which the immersive mode wasn't properly applied.
 
-* **lib/publicsuffixlist**
+* **lib-crash**
+  * 🚒 Bug fixed [issue #11627](https://github.com/mozilla-mobile/android-components/issues/11627) - Firefox crash notification is not displayed on devices with Android 11/Android 12
+
+* **lib-publicsuffixlist**
   * ⚠️ **This is a breaking change**: Removed `String.urlToTrimmedHost` extension method.
 
 * **feature-top-sites**
   * ⚠️ **This is a breaking change**: The existing data class `TopSite` has been converted into a sealed class. [#11483](https://github.com/mozilla-mobile/android-components/issues/11483)
   * Extend `DefaultTopSitesStorage` to accept a `TopSitesProvider` for fetching top sites. [#11483](https://github.com/mozilla-mobile/android-components/issues/11483)
-  
+  * ⚠️ **This is a breaking change**: Added a new parameter `fetchProvidedTopSites` to `TopSitesConfig` to specify whether or not to fetch top sites from the `TopSitesProvider`. [#11605](https://github.com/mozilla-mobile/android-components/issues/11605)
+
+* **concept-storage**
+  * ⚠️ **This is a breaking change**: Adds a new `isRemote` property in `VisitInfo` which distinguishes visits made on the device and those that come from Sync.
+
 * **service-contile**
   * Adds a `ContileTopSitesProvider` that implements `TopSitesProvider` for returning top sites from the Contile services API. [#11483](https://github.com/mozilla-mobile/android-components/issues/11483)
 
 * **service-glean**
   * 🆙 Updated Glean to version 43.0.2 ([changelog](https://github.com/mozilla/glean/releases/tag/v43.0.2))
     * Includes new `build_date` metric
+
+* **lib-push-amazon**
+  * ❌ **This is a breaking change**: This component is now removed since we no longer support it.
 
 # 97.0.0
 * [Commits](https://github.com/mozilla-mobile/android-components/compare/v96.0.0...v97.0.0)

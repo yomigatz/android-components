@@ -36,7 +36,7 @@ internal data class SearchDatasetBuilder(
             context,
             configuration.activityRequestCode + MAX_LOGINS,
             searchIntent,
-            PendingIntent.FLAG_CANCEL_CURRENT
+            PendingIntent.FLAG_MUTABLE or PendingIntent.FLAG_CANCEL_CURRENT
         )
         val intentSender: IntentSender = searchPendingIntent.intentSender
 

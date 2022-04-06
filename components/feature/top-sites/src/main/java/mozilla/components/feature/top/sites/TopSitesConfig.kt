@@ -14,8 +14,23 @@ import mozilla.components.concept.storage.FrecencyThresholdOption
  * @property frecencyConfig If [frecencyConfig] is specified, only visited sites with a frecency
  * score above the given threshold will be returned. Otherwise, frecent top site results are
  * not included.
+ * @property providerConfig An instance of [TopSitesProviderConfig] that specifies whether or
+ * not to fetch top sites from the [TopSitesProvider].
  */
 data class TopSitesConfig(
     val totalSites: Int,
-    val frecencyConfig: FrecencyThresholdOption?
+    val frecencyConfig: FrecencyThresholdOption? = null,
+    val providerConfig: TopSitesProviderConfig? = null
+)
+
+/**
+ * Top sites provider configuration to specify whether or not to fetch top sites from the provider.
+ *
+ * @property showProviderTopSites Whether or not to display the top sites from the provider.
+ * @property maxThreshold Only fetch the top sites from the provider if the number of top sites are
+ * below the maximum threshold.
+ */
+data class TopSitesProviderConfig(
+    val showProviderTopSites: Boolean,
+    val maxThreshold: Int = Int.MAX_VALUE
 )

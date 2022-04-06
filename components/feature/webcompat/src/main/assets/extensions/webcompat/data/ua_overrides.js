@@ -346,27 +346,6 @@ const AVAILABLE_UA_OVERRIDES = [
   },
   {
     /*
-     * Bug 1621065 - UA overrides for bracketchallenge.ncaa.com
-     * Webcompat issue #49886 - https://webcompat.com/issues/49886
-     *
-     * The NCAA bracket challenge website mistakenly classifies
-     * any non-Chrome browser on Android as "is_old_android". As a result,
-     * a modal is shown telling them they have security flaws. We have
-     * attempted to reach out for a fix (and clarification).
-     */
-    id: "bug1621065",
-    platform: "android",
-    domain: "bracketchallenge.ncaa.com",
-    bug: "1621065",
-    config: {
-      matches: ["*://bracketchallenge.ncaa.com/*"],
-      uaTransformer: originalUA => {
-        return originalUA + " Chrome";
-      },
-    },
-  },
-  {
-    /*
      * Bug 1622063 - UA override for wp1-ext.usps.gov
      * Webcompat issue #29867 - https://webcompat.com/issues/29867
      *
@@ -426,7 +405,6 @@ const AVAILABLE_UA_OVERRIDES = [
   },
   {
     /*
-     * Bug 1563839 - rolb.santanderbank.com - Build UA override
      * Bug 1646791 - bancosantander.es - Re-add UA override.
      * Bug 1665129 - *.gruposantander.es - Add wildcard domains.
      * WebCompat issue #33462 - https://webcompat.com/issues/33462
@@ -445,16 +423,14 @@ const AVAILABLE_UA_OVERRIDES = [
         "*://*.bancosantander.es/*",
         "*://*.gruposantander.es/*",
         "*://*.santander.co.uk/*",
-        "*://bob.santanderbank.com/*",
-        "*://rolb.santanderbank.com/*",
       ],
       uaTransformer: originalUA => {
-        // The two lines related to Firefox 100 are for Bug 1743445.
+        // The first line related to Firefox 100 is for Bug 1743445.
         // [TODO]: Remove when bug 1743429 gets backed out.
-        return originalUA
-          .replace("Gecko", "like Gecko")
-          .replace("Firefox/100.0", "Firefox/96.0")
-          .replace("rv:100.0", "rv:96.0");
+        return UAHelpers.capVersionTo99(originalUA).replace(
+          "Gecko",
+          "like Gecko"
+        );
       },
     },
   },
@@ -475,25 +451,6 @@ const AVAILABLE_UA_OVERRIDES = [
       matches: ["*://www.jp.square-enix.com/music/sem/page/FF7R/ost/*"],
       uaTransformer: originalUA => {
         return originalUA + " Chrome/83";
-      },
-    },
-  },
-  {
-    /*
-     * Bug 1654888 - UA override for ebuyer.com
-     * Webcompat issue #52463 - https://webcompat.com/issues/52463
-     *
-     * This site returns desktop site based on server side UA detection.
-     * Spoofing as Chrome allows to get mobile experience
-     */
-    id: "bug1654888",
-    platform: "android",
-    domain: "ebuyer.com",
-    bug: "1654888",
-    config: {
-      matches: ["*://*.ebuyer.com/*"],
-      uaTransformer: () => {
-        return UAHelpers.getDeviceAppropriateChromeUA();
       },
     },
   },
@@ -633,25 +590,6 @@ const AVAILABLE_UA_OVERRIDES = [
   },
   {
     /*
-     * Bug 1727100 - Add UA override for slack.com
-     *
-     * Slack locks some features (like Huddles, and some Call features) behind
-     * UA sniffing. However, in our tests, everything appears to be working fine
-     * if we spoof as Chrome.
-     */
-    id: "bug1727100",
-    platform: "desktop",
-    domain: "slack.com",
-    bug: "1727100",
-    config: {
-      matches: ["*://app.slack.com/*"],
-      uaTransformer: () => {
-        return UAHelpers.getDeviceAppropriateChromeUA("95.0.4638.54");
-      },
-    },
-  },
-  {
-    /*
      * Bug 1738317 - Add UA override for vmos.cn
      * Webcompat issue #90432 - https://github.com/webcompat/web-bugs/issues/90432
      *
@@ -704,24 +642,6 @@ const AVAILABLE_UA_OVERRIDES = [
       matches: ["*://*.renaud-bray.com/*"],
       uaTransformer: originalUA => {
         return originalUA + " Version/0";
-      },
-    },
-  },
-  {
-    /*
-     * Bug 1741892 - Add UA override for goal.com
-     *
-     * This site needs to have Chrome into its UA string to be able
-     * to serve the right experience on both desktop and mobile.
-     */
-    id: "bug1741892",
-    platform: "all",
-    domain: "goal.com",
-    bug: "1741892",
-    config: {
-      matches: ["*://goal.com/*"],
-      uaTransformer: originalUA => {
-        return originalUA + " Chrome/98.0.1086.0";
       },
     },
   },
@@ -785,29 +705,164 @@ const AVAILABLE_UA_OVERRIDES = [
     /*
      * Bug 1743429 - Add UA override for sites broken with the Version 100 User Agent
      *
-     * We're running an experiment on Desktop with Beta and Nightly, to investigate
-     * how much the web breaks with a Version 100 User Agent. Some sites do not
-     * like this, so let's override for now
+     * Some sites have issues with a UA string with Firefox version 100 or higher,
+     * so present as version 99 for now.
      */
     id: "bug1743429",
-    platform: "desktop",
+    platform: "all",
     domain: "Sites with known Version 100 User Agent breakage",
     bug: "1743429",
     config: {
       matches: [
-        "*://*.wordpress.org/*", // Bug 1743431,
+        "*://*.wordpress.org/*", // Bug 1743431
+        "*://bethesda.net/*", // #94607
+        "*://citoyens.telerecours.fr/*", // #101066
+        "*://genehmigung.ahs-vwa.at/*", // #100063
+        "*://moje.pzu.pl/*", // #99772
+        "*://mon.allianzbanque.fr/*", // #101074
+        "*://online.citi.com/*", // #101268
+        "*://simperium.com/*", // #98934
+        "*://wifi.sncf/*", // #100194
+        "*://www.brownells.com/*", // #90806
+        "*://www.discoveryplus.in/*", // #100389
+        "*://www.eurosportplayer.com/*", // #91087
+        "*://www.gismeteo.ru/*", // #101326
+        "*://www.hannaandersson.com/*", // #95003
+        "*://www.imb.com.au/*", // Bug 1762209
+        "*://www.manchestereveningnews.co.uk/*", // #100923
+        "*://www.mirror.co.uk/*", // #100053
+        "*://www.petalmail.com/*", // #99339
+        "*://www.screwfix.com/*", // #96959
+        "*://www.services.gov.on.ca/*", // #100926
+        "*://www.smsv.com.ar/*", // #90666
       ],
       uaTransformer: originalUA => {
-        if (!originalUA.includes("Firefox/100.0")) {
+        return UAHelpers.capVersionTo99(originalUA);
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1751232 - Add override for sites returning desktop layout for Android 12
+     * Webcompat issue #92978 - https://github.com/webcompat/web-bugs/issues/92978
+     *
+     * A number of news sites returns desktop layout for Android 12 only. Changing it
+     * to Android 12.0 fixes the issue
+     */
+    id: "bug1751232",
+    platform: "android",
+    domain: "Sites with desktop layout for Android 12",
+    bug: "1751232",
+    config: {
+      matches: [
+        "*://*.dw.com/*",
+        "*://*.abc10.com/*",
+        "*://*.wnep.com/*",
+        "*://*.dn.se/*",
+        "*://*.dailymail.co.uk/*",
+        "*://*.kohls.com/*",
+        "*://*.expressen.se/*",
+        "*://*.walmart.com/*",
+      ],
+      uaTransformer: originalUA => {
+        if (!originalUA.includes("Android 12;")) {
           return originalUA;
         }
 
-        // We do not have a good way to determine the original version number.
-        // since the experiment is short-lived, however, we can just set 96 here
-        // and be done with it.
-        return originalUA
-          .replace("Firefox/100.0", "Firefox/96.0")
-          .replace("rv:100.0", "rv:96.0");
+        return originalUA.replace("Android 12;", "Android 12.0;");
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1754180 - UA override for nordjyske.dk
+     * Webcompat issue #94661 - https://webcompat.com/issues/94661
+     *
+     * The site doesn't provide a mobile layout to Firefox for Android
+     * without a Chrome UA string for a high-end device.
+     */
+    id: "bug1754180",
+    platform: "android",
+    domain: "nordjyske.dk",
+    bug: "1754180",
+    config: {
+      matches: ["*://nordjyske.dk/*"],
+      uaTransformer: originalUA => {
+        return UAHelpers.getDeviceAppropriateChromeUA("97.0.4692.9", "Pixel 4");
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1177298 - UA overrides for expertflyer.com
+     * Webcompat issue #96685 - https://webcompat.com/issues/96685
+     *
+     * The site does not offer a stylesheet unless AppleWebKit
+     * is part of the user-agent string.
+     */
+    id: "bug1753631",
+    platform: "android",
+    domain: "expertflyer.com",
+    bug: "1753631",
+    config: {
+      matches: ["*://*.expertflyer.com/*"],
+      uaTransformer: originalUA => {
+        return originalUA + " AppleWebKit";
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1753461 - UA override for serieson.naver.com
+     * Webcompat issue #99993 - https://webcompat.com/issues/97298
+     *
+     * The site locks out Firefox users unless a Chrome UA is given,
+     * and locks out Linux users as well (so we use Windows+Chrome).
+     */
+    id: "bug1753461",
+    platform: "desktop",
+    domain: "serieson.naver.com",
+    bug: "1753461",
+    config: {
+      matches: ["*://serieson.naver.com/*"],
+      uaTransformer: originalUA => {
+        return "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.99 Safari/537.36";
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1756872 - UA override for www.dolcegabbana.com
+     * Webcompat issue #99993 - https://webcompat.com/issues/99993
+     *
+     * The site's layout is broken on Firefox for Android
+     * without a full Chrome user-agent string.
+     */
+    id: "bug1756872",
+    platform: "android",
+    domain: "www.dolcegabbana.com",
+    bug: "1756872",
+    config: {
+      matches: ["*://www.dolcegabbana.com/*"],
+      uaTransformer: originalUA => {
+        return UAHelpers.getDeviceAppropriateChromeUA();
+      },
+    },
+  },
+  {
+    /*
+     * Bug 1751604 - UA override for /www.otsuka.co.jp/fib/
+     *
+     * The site's content is not loaded unless a Chrome UA is used.
+     */
+    id: "bug1751604",
+    platform: "desktop",
+    domain: "www.otsuka.co.jp",
+    bug: "1751604",
+    config: {
+      matches: ["*://www.otsuka.co.jp/fib/*"],
+      uaTransformer: originalUA => {
+        return UAHelpers.getDeviceAppropriateChromeUA("97.0.4692.9");
       },
     },
   },

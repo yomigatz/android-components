@@ -45,8 +45,9 @@ internal class DefaultTopSitesPresenter(
 
         scope.launch {
             val topSites = storage.getTopSites(
-                innerConfig.totalSites,
-                innerConfig.frecencyConfig
+                totalSites = innerConfig.totalSites,
+                frecencyConfig = innerConfig.frecencyConfig,
+                providerConfig = innerConfig.providerConfig
             )
 
             scope.launch(Dispatchers.Main) {

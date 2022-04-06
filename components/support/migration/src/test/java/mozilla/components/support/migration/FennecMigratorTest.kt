@@ -6,9 +6,14 @@ package mozilla.components.support.migration
 
 import android.content.Context
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
 import mozilla.appservices.places.BookmarkRoot
-import mozilla.appservices.places.PlacesException
+import mozilla.appservices.places.uniffi.PlacesException
 import mozilla.components.browser.state.action.BrowserAction
 import mozilla.components.browser.state.action.TabListAction
 import mozilla.components.browser.state.state.BrowserState
@@ -35,6 +40,7 @@ import mozilla.components.support.test.mock
 import mozilla.components.support.test.robolectric.testContext
 import mozilla.components.support.test.whenever
 import org.json.JSONObject
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -50,17 +56,26 @@ import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoInteractions
 import java.io.File
-import java.lang.IllegalArgumentException
-import java.lang.IllegalStateException
 
 @RunWith(AndroidJUnit4::class)
 class FennecMigratorTest {
     private lateinit var securePrefs: SecureAbove22Preferences
+    @ExperimentalCoroutinesApi
+    private val testDispatcher = TestCoroutineDispatcher()
 
     @Before
+    @ExperimentalCoroutinesApi
     fun setup() {
         // forceInsecure is set in the tests because a keystore wouldn't be configured in the test environment.
         securePrefs = SecureAbove22Preferences(testContext, "test_prefs", forceInsecure = true)
+        Dispatchers.setMain(testDispatcher)
+    }
+
+    @ExperimentalCoroutinesApi
+    @After
+    fun tearDown() {
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 
     @Test
@@ -365,7 +380,7 @@ class FennecMigratorTest {
         val historyStorage: PlacesHistoryStorage = mock()
 
         // Fail during history migration.
-        `when`(historyStorage.importFromFennec(any())).thenThrow(PlacesException("test exception"))
+        `when`(historyStorage.importFromFennec(any())).thenThrow(PlacesException.InvalidParent("test exception"))
 
         val migrator = FennecMigrator.Builder(testContext, mock())
             .migrateHistory(lazy { historyStorage })
@@ -401,7 +416,7 @@ class FennecMigratorTest {
         val historyStorage: PlacesHistoryStorage = mock()
 
         // Fail during history migration.
-        `when`(historyStorage.importFromFennec(any())).thenThrow(PlacesException("test exception"))
+        `when`(historyStorage.importFromFennec(any())).thenThrow(PlacesException.InvalidParent("test exception"))
 
         `when`(bookmarkStorage.importFromFennec(any())).thenReturn(
             JSONObject().also {
@@ -449,8 +464,8 @@ class FennecMigratorTest {
         val historyStorage: PlacesHistoryStorage = mock()
 
         // Both migrations failed.
-        `when`(historyStorage.importFromFennec(any())).thenThrow(PlacesException("test exception"))
-        `when`(bookmarkStorage.importFromFennec(any())).thenThrow(PlacesException("test exception"))
+        `when`(historyStorage.importFromFennec(any())).thenThrow(PlacesException.InvalidParent("test exception"))
+        `when`(bookmarkStorage.importFromFennec(any())).thenThrow(PlacesException.BookmarksCorruption("test exception"))
 
         val migrator = FennecMigrator.Builder(testContext, mock())
             .migrateHistory(lazy { historyStorage })

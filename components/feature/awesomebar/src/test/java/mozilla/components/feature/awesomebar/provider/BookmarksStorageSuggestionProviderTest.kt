@@ -15,6 +15,7 @@ import mozilla.components.support.test.eq
 import mozilla.components.support.test.mock
 import mozilla.components.support.utils.StorageUtils.levenshteinDistance
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -105,6 +106,24 @@ class BookmarksStorageSuggestionProviderTest {
         verify(engine, times(1)).speculativeConnect(eq(suggestions[0].description!!))
     }
 
+    @Test
+    fun `WHEN provider is set to not show edit suggestions THEN edit suggestion is set to null`() = runBlocking {
+        val engine: Engine = mock()
+        val provider = BookmarksStorageSuggestionProvider(bookmarks, mock(), engine = engine, showEditSuggestion = false)
+
+        var suggestions = provider.onInputChanged("")
+        assertTrue(suggestions.isEmpty())
+        verify(engine, never()).speculativeConnect(anyString())
+
+        val id = bookmarks.addItem("Mobile", newItem.url!!, newItem.title!!, null)
+        suggestions = provider.onInputChanged("moz")
+        assertEquals(1, suggestions.size)
+        assertEquals(id, suggestions[0].id)
+        assertNull(suggestions[0].editSuggestion)
+        assertEquals("http://www.mozilla.org", suggestions[0].description)
+        verify(engine, times(1)).speculativeConnect(eq(suggestions[0].description!!))
+    }
+
     @SuppressWarnings
     class testableBookmarksStorage : BookmarksStorage {
         val bookmarkMap: HashMap<String, BookmarkNode> = hashMapOf()
@@ -166,7 +185,7 @@ class BookmarksStorageSuggestionProviderTest {
             parentGuid: String,
             url: String,
             title: String,
-            position: Int?
+            position: UInt?
         ): String {
             val id = UUID.randomUUID().toString()
             bookmarkMap[id] =
@@ -174,12 +193,12 @@ class BookmarksStorageSuggestionProviderTest {
             return id
         }
 
-        override suspend fun addFolder(parentGuid: String, title: String, position: Int?): String {
+        override suspend fun addFolder(parentGuid: String, title: String, position: UInt?): String {
             // "Not needed for the test"
             throw NotImplementedError()
         }
 
-        override suspend fun addSeparator(parentGuid: String, position: Int?): String {
+        override suspend fun addSeparator(parentGuid: String, position: UInt?): String {
             // "Not needed for the test"
             throw NotImplementedError()
         }

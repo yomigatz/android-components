@@ -24,7 +24,7 @@ import kotlin.coroutines.CoroutineContext
  * @param historyStorage An instance of [PlacesHistoryStorage], used for retrieving top frecent
  * sites from history.
  * @param topSitesProvider An optional instance of [TopSitesProvider], used for retrieving
- * additional top sites from a provider.
+ * additional top sites from a provider. The returned top sites are added before pinned sites.
  * @param defaultTopSites A list containing a title to url pair of default top sites to be added
  * to the [PinnedSiteStorage].
  */
@@ -83,26 +83,35 @@ class DefaultTopSitesStorage(
         }
     }
 
-    @Suppress("TooGenericExceptionCaught")
+    @Suppress("ComplexCondition", "TooGenericExceptionCaught")
     override suspend fun getTopSites(
         totalSites: Int,
-        frecencyConfig: FrecencyThresholdOption?
+        frecencyConfig: FrecencyThresholdOption?,
+        providerConfig: TopSitesProviderConfig?
     ): List<TopSite> {
         val topSites = ArrayList<TopSite>()
         val pinnedSites = pinnedSitesStorage.getPinnedSites().take(totalSites)
+        var providerTopSites = emptyList<TopSite>()
         var numSitesRequired = totalSites - pinnedSites.size
 
-        topSites.addAll(pinnedSites)
-
-        topSitesProvider?.let { provider ->
+        if (topSitesProvider != null &&
+            providerConfig != null &&
+            providerConfig.showProviderTopSites &&
+            pinnedSites.size < providerConfig.maxThreshold
+        ) {
             try {
-                val providerTopSites = provider.getTopSites()
-                topSites.addAll(providerTopSites.take(numSitesRequired))
+                providerTopSites = topSitesProvider
+                    .getTopSites(allowCache = true)
+                    .take(numSitesRequired)
+                    .take(providerConfig.maxThreshold - pinnedSites.size)
+                topSites.addAll(providerTopSites)
                 numSitesRequired -= providerTopSites.size
             } catch (e: Exception) {
                 logger.error("Failed to fetch top sites from provider", e)
             }
         }
+
+        topSites.addAll(pinnedSites)
 
         if (frecencyConfig != null && numSitesRequired > 0) {
             // Get 'totalSites' sites for duplicate entries with
@@ -110,7 +119,7 @@ class DefaultTopSitesStorage(
             val frecentSites = historyStorage
                 .getTopFrecentSites(totalSites, frecencyConfig)
                 .map { it.toTopSite() }
-                .filter { !pinnedSites.hasUrl(it.url) }
+                .filter { !pinnedSites.hasUrl(it.url) && !providerTopSites.hasUrl(it.url) }
                 .take(numSitesRequired)
 
             topSites.addAll(frecentSites)
